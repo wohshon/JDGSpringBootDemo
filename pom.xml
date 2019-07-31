@@ -19,6 +19,8 @@
 <java.version>1.8</java.version>
 <version.infinispan.starter>2.1.5.Final-redhat-00008</version.infinispan.starter>
 <version.infinispan>9.4.6.Final-redhat-00002</version.infinispan>
+<start-class>com.redhat.jdgspringboot.JDGSpringBootApplication</start-class>
+
 	</properties>
 <dependencyManagement>
   <dependencies>
