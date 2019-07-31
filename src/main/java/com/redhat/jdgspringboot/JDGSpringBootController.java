@@ -28,10 +28,11 @@ public class JDGSpringBootController {
 
 	Logger log=Logger.getLogger(this.getClass().getName());
 
+
 	@Autowired
 	public JDGSpringBootController(RemoteCacheManager cacheManager) {
 	    this.cacheManager = cacheManager;
-
+	    log.info("================="+cacheManager.getCacheNames());
 	}
 	@Autowired
     private Environment env;

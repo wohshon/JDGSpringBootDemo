@@ -17,6 +17,8 @@
 	<properties>
 <fabric8.generator.from>registry.redhat.io/openjdk/openjdk-8-rhel8:latest</fabric8.generator.from>
 <java.version>1.8</java.version>
+
+<!--version.infinispan.starter>1.0.7.Final-redhat-00006</version.infinispan.starter-->
 <version.infinispan.starter>2.1.5.Final-redhat-00008</version.infinispan.starter>
 <version.infinispan>9.4.6.Final-redhat-00002</version.infinispan>
 <!--start-class>com.redhat.jdgspringboot.JDGSpringBootApplication</start-class-->
