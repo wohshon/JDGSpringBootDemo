@@ -58,10 +58,12 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!--		
 	<dependency>
 	    <groupId>org.keycloak</groupId>
 	    <artifactId>keycloak-spring-boot-starter</artifactId>
     </dependency>
+	-->
        <dependency>
            <groupId>org.infinispan</groupId>
            <artifactId>infinispan-bom</artifactId>
