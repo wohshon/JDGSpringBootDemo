@@ -43,10 +43,10 @@ public class JDGSpringBootController {
     	//test jdg
     	log.info("init.....");
     	log.info("================="+cacheManager.getConfiguration());
-		/*
-		 * Set<String> names=this.cacheManager.getCacheNames(); Iterator<String>
-		 * i=names.iterator(); while (i.hasNext()) { log.info("cache: "+i.next()); }
-		 */
+		
+		 Set<String> names=this.cacheManager.getCacheNames(); Iterator<String>
+		 i=names.iterator(); while (i.hasNext()) { log.info("cache: "+i.next()); }
+		 
     	//RemoteCache<String, String> remoteCache=this.cacheManager.getCache("default");
     	//log.info("remoteCache:"+remoteCache);
         return "test";
