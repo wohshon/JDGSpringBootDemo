@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -49,7 +50,15 @@ public class JDGSpringBootController {
 		 
     	//RemoteCache<String, String> remoteCache=this.cacheManager.getCache("default");
     	//log.info("remoteCache:"+remoteCache);
-        return "test";
+        RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
+        cache.put("key1", "1234");
+        UserObject user1=new UserObject();
+        user1.setName("joe");
+        user1.setUserId("123");
+        cache.put("key2", user1);
+        log.info("key 1:"+cache.get("key1"));
+        log.info("key 2:"+((UserObject)cache.get("key2")).getName());
+		 return "test";
     	//return "Hello "+remoteCache.get("hello");
     }
 		
