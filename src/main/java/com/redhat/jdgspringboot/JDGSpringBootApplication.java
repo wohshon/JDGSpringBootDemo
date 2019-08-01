@@ -40,7 +40,8 @@ public class JDGSpringBootApplication {
 	    	    	.ssl()
 	    	    	.enable()
 	    	    	.sniHostName("datagrid-service-hotrod-route-jdg.apps.cluster-sgp-ae3e.sgp-ae3e.openshiftworkshop.com")
-	    	    	.trustStoreFileName("truststore.jks")
+	    	    	.trustStoreFileName("classes/truststore.jks")
+	    	    	//.trustStorePath("/")
 	    	    	//.keyAlias("jdg")
 	    	    	.trustStorePassword("password".toCharArray())	    		  
 	    		  .build();
