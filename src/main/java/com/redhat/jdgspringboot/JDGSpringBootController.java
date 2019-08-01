@@ -52,11 +52,11 @@ public class JDGSpringBootController {
     	//log.info("remoteCache:"+remoteCache);
         RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
         cache.put("key1", "1234");
+        log.info("key 1:"+cache.get("key1"));
         UserObject user1=new UserObject();
         user1.setName("joe");
         user1.setUserId("123");
         cache.put("key2", user1);
-        log.info("key 1:"+cache.get("key1"));
         log.info("key 2:"+((UserObject)cache.get("key2")).getName());
 		 return "test";
     	//return "Hello "+remoteCache.get("hello");

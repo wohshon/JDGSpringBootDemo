@@ -3,6 +3,7 @@ package com.redhat.jdgspringboot;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.SaslQop;
+import org.infinispan.commons.marshall.jboss.GenericJBossMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +44,8 @@ public class JDGSpringBootApplication {
 	    	    	.trustStoreFileName("/deployments/data/truststore.jks")
 	    	    	//.trustStorePath("/")
 	    	    	//.keyAlias("jdg")
-	    	    	.trustStorePassword("password".toCharArray())	    		  
+	    	    	.trustStorePassword("password".toCharArray())
+	    	    	.marshaller(GenericJBossMarshaller.class)
 	    		  .build();
 /*	    	.addServer()
 	    	.host("datagrid-service-hotrod-ext-route-jdg.apps.cluster-sgp-ae3e.sgp-ae3e.openshiftworkshop.com")
