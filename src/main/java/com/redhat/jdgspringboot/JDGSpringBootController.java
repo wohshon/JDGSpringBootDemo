@@ -32,7 +32,9 @@ public class JDGSpringBootController {
 	@Autowired
 	public JDGSpringBootController(RemoteCacheManager cacheManager) {
 	    this.cacheManager = cacheManager;
-	    log.info("================="+cacheManager.getCacheNames());
+	    log.info("================="+cacheManager.getConfiguration());
+    	cacheManager.getCache();
+
 	}
 	@Autowired
     private Environment env;
@@ -40,11 +42,11 @@ public class JDGSpringBootController {
     public String index() {
     	//test jdg
     	log.info("init.....");
-    	Set<String> names=this.cacheManager.getCacheNames();
-    	Iterator<String> i=names.iterator();
-    	while (i.hasNext()) {
-    		log.info("cache: "+i.next());
-    	}
+    	log.info("================="+cacheManager.getConfiguration());
+		/*
+		 * Set<String> names=this.cacheManager.getCacheNames(); Iterator<String>
+		 * i=names.iterator(); while (i.hasNext()) { log.info("cache: "+i.next()); }
+		 */
     	//RemoteCache<String, String> remoteCache=this.cacheManager.getCache("default");
     	//log.info("remoteCache:"+remoteCache);
         return "test";
