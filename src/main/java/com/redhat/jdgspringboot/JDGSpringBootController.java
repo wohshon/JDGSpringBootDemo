@@ -105,8 +105,12 @@ public class JDGSpringBootController {
         
         //List<UserObject> results=query.list();
         //log.info("results "+results.size());
-        String name=(String)cache.get(userId);
-    	return name ;
+        UserObject user=((UserObject)cache.get(userId));
+        if (user!=null) {
+        	return user.getName();
+        }
+        else 
+    	return "no such person" ;
         //return "This is User Service  : " ;
     }
 
