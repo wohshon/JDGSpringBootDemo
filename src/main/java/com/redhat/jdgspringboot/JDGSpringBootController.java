@@ -1,11 +1,15 @@
 package com.redhat.jdgspringboot;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.Search;
+import org.infinispan.query.dsl.Query;
+import org.infinispan.query.dsl.QueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.redhat.jdgspringboot.model.UserObject;
 
@@ -53,24 +56,27 @@ public class JDGSpringBootController {
         RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
         cache.put("key1", "1234");
         log.info("key 1:"+cache.get("key1"));
-        UserObject user1=new UserObject();
-        user1.setName("joe");
-        user1.setUserId("123");
-        cache.put("key2", user1);
-        log.info("key 2:"+((UserObject)cache.get("key2")).getName());
+        for (int x=0;x < 100;x++) {
+            UserObject user1=new UserObject();
+            user1.setName("joe"+x);
+            user1.setUserId("0000123"+x);
+            cache.put("key"+x, user1);
+            log.info("key "+x+":"+((UserObject)cache.get("key"+x)).getName());
+        	
+        }
 		 return "test";
     	//return "Hello "+remoteCache.get("hello");
     }
 		
     @GetMapping("/userService/{userId}")
     public String getUser(@PathVariable String userId) {
-        log.info("User Facade- get info for  "+userId);
-        //call backend
-        final String uri = env.getProperty("backend.endpoint");
-        log.info("uri: "+uri);
-        RestTemplate restTemplate = new RestTemplate();
-        UserObject user=restTemplate.getForObject(uri+userId, UserObject.class);
-    	return user.getName() ;
+        RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
+        //(UserObject)cache.get("key"+x)).getName()
+        QueryFactory queryFactory = Search.getQueryFactory(cache);
+        Query query = queryFactory.from(UserObject.class).having("userId").eq(userId).build();
+        List<UserObject> results=query.list();
+        log.info("results "+results.size());
+    	return "OK" ;
         //return "This is User Service  : " ;
     }
 
