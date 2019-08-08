@@ -1,9 +1,16 @@
 package com.redhat.jdgspringboot;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
@@ -64,6 +71,27 @@ public class JDGSpringBootController {
             log.info("key "+x+":"+((UserObject)cache.get("key"+x)).getName());
         	
         }
+		/*
+		 * String serverHost = "";// The address of your JDG server int serverJmxPort =
+		 * 0; // The JMX port of your server String cacheContainerName = ""; // The name
+		 * of your cache container String schemaFileName = ""; // The name of the schema
+		 * file String schemaFileContents = ""; // The Protobuf schema file contents
+		 * 
+		 * JMXConnector jmxConnector; try { jmxConnector =
+		 * JMXConnectorFactory.connect(new JMXServiceURL("service:jmx:remoting-jmx://" +
+		 * serverHost + ":" + serverJmxPort)); MBeanServerConnection jmxConnection =
+		 * jmxConnector.getMBeanServerConnection();
+		 * 
+		 * ObjectName protobufMetadataManagerObjName = new
+		 * ObjectName("jboss.infinispan:type=RemoteQuery,name=" +
+		 * ObjectName.quote(cacheContainerName) + ",component=ProtobufMetadataManager");
+		 * 
+		 * jmxConnection.invoke(protobufMetadataManagerObjName,"registerProtofile", new
+		 * Object[]{schemaFileName, schemaFileContents}, new
+		 * String[]{String.class.getName(), String.class.getName()});
+		 * jmxConnector.close(); } catch (IOException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
 		 return "test";
     	//return "Hello "+remoteCache.get("hello");
     }
@@ -72,11 +100,13 @@ public class JDGSpringBootController {
     public String getUser(@PathVariable String userId) {
         RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
         //(UserObject)cache.get("key"+x)).getName()
-        QueryFactory queryFactory = Search.getQueryFactory(cache);
-        Query query = queryFactory.from(UserObject.class).having("userId").eq(userId).build();
-        List<UserObject> results=query.list();
-        log.info("results "+results.size());
-    	return "OK" ;
+        //QueryFactory queryFactory = Search.getQueryFactory(cache);
+        //Query query = queryFactory.from(UserObject.class).having("userId").eq(userId).build();
+        
+        //List<UserObject> results=query.list();
+        //log.info("results "+results.size());
+        String name=(String)cache.get(userId);
+    	return name ;
         //return "This is User Service  : " ;
     }
 
