@@ -55,7 +55,6 @@ public class JDGSpringBootController {
 	 */
     @RequestMapping("/init")	
     public String index() {
-    	//test jdg
     	log.info("init.....");
 		
 		 Set<String> names=this.cacheManager.getCacheNames(); Iterator<String>
