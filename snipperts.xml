@@ -1,0 +1,27 @@
+        <subsystem xmlns="urn:infinispan:server:core:9.4">
+            <cache-container name="clustered" default-cache="users" statistics="true">
+                <transport lock-timeout="60000"/>
+                <global-state/>
+          <!-- Add a distributed cache named 'users' -->
+          <distributed-cache name="users">
+              <!-- Define the locking isolation of this cache -->
+              <locking acquire-timeout="20000" concurrency-level="500" striping="false"/>
+
+              <!-- Enable indexing using default configs
+              <indexing index="LOCAL" auto-config="true"/>
+                -->
+              <!-- Define the JdbcBinaryCacheStores to point to the ExampleDS previously defined -->
+              <string-keyed-jdbc-store datasource="java:jboss/datasources/MySqlDS" passivation="false" preload="true" purge="false">
+                  <!-- specifies information about database table/column names and data types -->
+                  <string-keyed-table prefix="JDG">
+                      <id-column name="id" type="VARCHAR(50)"/>
+                      <data-column name="datum" type="MEDIUMBLOB"/>
+                      <timestamp-column name="version" type="BIGINT"/>
+                  </string-keyed-table>
+              </string-keyed-jdbc-store>
+
+          </distributed-cache>
+
+            </cache-container>
+        </subsystem>
+
