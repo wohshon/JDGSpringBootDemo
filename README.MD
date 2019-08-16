@@ -25,7 +25,7 @@ cd <root folder of app>
 
 Alternatively, there is a binary packaged in the target folder, if all your local configurations are same as the sample app, you can run it directly
 
-``` java -jar target/demo-springboot-0.0.1-SNAPSHOT.jar 
+``` java -jar demo-springboot-0.0.1-SNAPSHOT.jar 
 
 
 ## Running the demo
