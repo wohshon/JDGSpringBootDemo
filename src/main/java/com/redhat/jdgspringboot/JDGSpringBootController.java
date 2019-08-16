@@ -1,22 +1,13 @@
 package com.redhat.jdgspringboot;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.management.MBeanServerConnection;
-import javax.management.ObjectName;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
-
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
-import org.infinispan.query.dsl.Query;
-import org.infinispan.query.dsl.QueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -29,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redhat.jdgspringboot.model.UserObject;
+import com.redhat.jdgspringboot.model.UserRepository;
 
 @RestController
 @RequestMapping("/rest")
@@ -36,13 +28,15 @@ import com.redhat.jdgspringboot.model.UserObject;
 public class JDGSpringBootController {
 	
 	private final RemoteCacheManager cacheManager;
+	private UserRepository repository;
 
 	Logger log=Logger.getLogger(this.getClass().getName());
 
 
 	@Autowired
-	public JDGSpringBootController(RemoteCacheManager cacheManager) {
+	public JDGSpringBootController(RemoteCacheManager cacheManager, UserRepository repository) {
 	    this.cacheManager = cacheManager;
+	    this.repository = repository;
 	    log.info("================="+cacheManager.getConfiguration());
     	cacheManager.getCache();
 
@@ -53,24 +47,48 @@ public class JDGSpringBootController {
     public String index() {
     	//test jdg
     	log.info("init.....");
-    	log.info("================="+cacheManager.getConfiguration());
+    	//log.info("================="+cacheManager.getConfiguration());
 		
 		 Set<String> names=this.cacheManager.getCacheNames(); Iterator<String>
 		 i=names.iterator(); while (i.hasNext()) { log.info("cache: "+i.next()); }
 		 
     	//RemoteCache<String, String> remoteCache=this.cacheManager.getCache("default");
     	//log.info("remoteCache:"+remoteCache);
-        RemoteCache<String, Object> cache=this.cacheManager.getCache("default");
-        cache.put("key1", "1234");
-        log.info("key 1:"+cache.get("key1"));
-        for (int x=0;x < 100;x++) {
-            UserObject user1=new UserObject();
-            user1.setName("joe"+x);
-            user1.setUserId("0000123"+x);
-            cache.put("key"+x, user1);
-            log.info("key "+x+":"+((UserObject)cache.get("key"+x)).getName());
-        	
-        }
+        RemoteCache<String, UserObject> cache=this.cacheManager.getCache("users");
+        //cache.put("key1", "1234");
+        //log.info("key 1:"+cache.get("key1"));
+        log.info("initial :"+cache.size());
+        ArrayList<UserObject> users=new ArrayList<UserObject>();
+		
+		  for (int x=0;x < 100;x++) { 
+		  UserObject user1=new UserObject();
+		  users.add(user1); user1.setName("joe"+x); 
+		  user1.setUserId("00001234"+x);
+		  //cache.put(user1.getUserId(), user1);
+		  //log.info(user1.getUserId()+":"+((UserObject)cache.get(user1.getUserId())).getName());
+		  //repository.save(user1);
+		  
+		  }
+		         
+        //List<UserObject> userResult=repository.findByName("joe1");
+        
+        //log.info("Found "+userResult.size()+" "+userResult.get(0).getName());
+        
+        //log.info("before size "+users.size()+" "+users);
+        //cache.put("list", users);
+        //UserObject specialUser=new UserObject();
+        //specialUser.setUserId("1111");
+        //specialUser.setName("1111");
+        //cache.put("1111",specialUser);
+        //log.info("==============="+cache.size());
+        
+        //specialUser.setName("special");
+        //users.add(specialUser);
+        //log.info("after size "+users.size());
+        //users=(ArrayList<UserObject>)cache.get("list");
+        //log.info("after size111 "+users.size()+" "+users);
+        //log.info("info "+((UserObject)users.get(1)).getName());
+        
 		/*
 		 * String serverHost = "";// The address of your JDG server int serverJmxPort =
 		 * 0; // The JMX port of your server String cacheContainerName = ""; // The name
