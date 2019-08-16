@@ -15,26 +15,27 @@ Data grid is setup to use jdbc cache store. Upon successful configuration and st
 Sample command:
 
 ```<SERVER_HOME>/bin/standalone.sh -b 127.0.0.1 -Djboss.socket.binding.port-offset=0 -c clustered.xml -Djboss.node.name=node1 -Djboss.server.base.dir=/home/virtuser/jboss-datagrid-7.3.0-server/node1
-
+```
 
 ## startup the spring boot apps
 
 ``` 
 cd <root folder of app>
 ./mvnw clean spring-boot:run 
-
+```
 Alternatively, there is a binary packaged in the target folder, if all your local configurations are same as the sample app, you can run it directly
 
-``` java -jar demo-springboot-0.0.1-SNAPSHOT.jar 
+`java -jar demo-springboot-0.0.1-SNAPSHOT.jar` 
 
 
 ## Running the demo
 
 ### initialising the cache with 100 records
 
-``` $ curl localhost:8081/rest/init
+`$ curl localhost:8081/rest/init`
 
-Verify in the console of the spring boot application, and run a query in the database ``` select * from JDG_users ```
+Verify in the console of the spring boot application, and run a query in the database 
+`select * from JDG_users`
 
 You should see 100 records returned.
 
