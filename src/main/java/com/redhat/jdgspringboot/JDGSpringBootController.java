@@ -1,20 +1,30 @@
 package com.redhat.jdgspringboot;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.Search;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
+import org.infinispan.protostream.DescriptorParserException;
+import org.infinispan.protostream.FileDescriptorSource;
+import org.infinispan.protostream.SerializationContext;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
+import org.infinispan.query.remote.client.ProtobufMetadataManagerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.redhat.jdgspringboot.model.UserObject;
+import com.redhat.jdgspringboot.model.UserObjectMarshaller;
 import com.redhat.jdgspringboot.model.UserRepository;
 
 @RestController
@@ -44,6 +55,23 @@ public class JDGSpringBootController {
 	    this.repository = repository;
 	    log.info("================="+cacheManager.getConfiguration());
     	cacheManager.getCache();
+    	SerializationContext serCtx = ProtoStreamMarshaller.getSerializationContext(cacheManager);
+    		try {
+				serCtx.registerProtoFiles(FileDescriptorSource.fromResources("userobject.proto"));
+	    		serCtx.registerMarshaller(new UserObjectMarshaller());
+				RemoteCache<String, String> metadataCache = cacheManager.getCache(
+					        ProtobufMetadataManagerConstants.PROTOBUF_METADATA_CACHE_NAME);
+			    InputStream resource = new ClassPathResource("userobject.proto").getInputStream();
+			    BufferedReader reader = new BufferedReader(new InputStreamReader(resource)); 
+    	        String proto = reader.lines().collect(Collectors.joining("\n"));
+				log.info(proto);
+					String schemaFileContents = proto;
+					log.info("----"+schemaFileContents);
+					metadataCache.put("userobject.proto", schemaFileContents);				
+			} catch (DescriptorParserException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	}
 	@Autowired
@@ -76,6 +104,11 @@ public class JDGSpringBootController {
 		  
 		  }
 		         
+		  log.info("test query");
+	        QueryFactory queryFactory = org.infinispan.client.hotrod.Search.getQueryFactory(cache);
+	        Query query = queryFactory.from(UserObject.class).having("name").eq("joe_98").build();
+	        List<UserObject> results=query.list();
+	        log.info("results "+results.size());
 		 return "init";
     }
 		

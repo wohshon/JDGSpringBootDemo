@@ -1,7 +1,7 @@
 package com.redhat.jdgspringboot;
 
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.commons.marshall.jboss.GenericJBossMarshaller;
+import org.infinispan.client.hotrod.marshall.ProtoStreamMarshaller;
 import org.infinispan.spring.starter.remote.InfinispanRemoteConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -26,14 +26,13 @@ public class JDGSpringBootApplication {
 	}
 	@Bean
 	public InfinispanRemoteConfigurer infinispanRemoteConfigurer() {
-	    return () -> new ConfigurationBuilder()
-	    		
+	    return () -> new ConfigurationBuilder()	    		
 		    	.addServer()
 		    	.host(env.getProperty("infinispan.host"))
 		    	.port(Integer.parseInt(env.getProperty("infinispan.port")))
 		    	.tcpKeepAlive(true)
-				.marshaller(GenericJBossMarshaller.class)
-				
+				//.marshaller(GenericJBossMarshaller.class)
+			    .marshaller(new ProtoStreamMarshaller())
 				  .build();
 
 	}	

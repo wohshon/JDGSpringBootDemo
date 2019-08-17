@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package jdgspringboot;
+
+option java_package = "com.redhat.jdgspringboot.model";
+option java_outer_classname = "UserObject";
+
+message UserObject {
+  required string userId = 1;
+  required string name = 2;
+}

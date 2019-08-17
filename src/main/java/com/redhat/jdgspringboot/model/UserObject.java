@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.infinispan.protostream.annotations.ProtoMessage;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Component
 @Getter @Setter @NoArgsConstructor
 @Entity
+@ProtoMessage(name = "jdgspringboot.UserObject")
 public class UserObject implements Serializable{
 
 	/**

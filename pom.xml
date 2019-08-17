@@ -58,6 +58,23 @@
 </dependency>
 <dependency>
     <groupId>org.infinispan</groupId>
+    <artifactId>infinispan-query</artifactId>
+    </dependency>
+<!-- https://mvnrepository.com/artifact/org.infinispan.protostream/protostream -->
+<!-- https://mvnrepository.com/artifact/org.infinispan.protostream/protostream -->
+<dependency>
+    <groupId>org.infinispan.protostream</groupId>
+    <artifactId>protostream</artifactId>
+    <version>4.2.3.Final-redhat-00001</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-remote-query-client -->
+<dependency>
+    <groupId>org.infinispan</groupId>
+    <artifactId>infinispan-remote-query-client</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.infinispan</groupId>
     <artifactId>infinispan-spring-boot-starter-remote</artifactId>
     <version>${version.infinispan.starter}</version>
 </dependency>
